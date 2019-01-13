@@ -21,14 +21,16 @@ midmean <- function(x) {
 }
 
 cali <- calh %>% group_by(ypsGene) %>% summarise_all(funs(midmean))
+names(cali)[-1] <- sub("(.*)_rc","\\1",names(cali[,-1]))
+
 tmp <- calh %>% group_by(ypsGene) %>% summarise(n=n())
 hist(tmp$n,breaks=50) ## number of snps, a gene have. 
 #something is not quite right with aggregate
 #exp_mid <- aggregate(. ~ ypsTript,exp_cvmatch_allmatch_tranID,max)
 
 
-x <- colSums(cali[,grep("^y.*[HA]_rc",names(cali),value=T)],na.rm=T)
-y <- colSums(cali[,grep("^r.*[HA]_rc",names(cali),value=T)],na.rm=T)
+x <- colSums(cali[,grep("^y.*[HA]",names(cali),value=T)],na.rm=T)
+y <- colSums(cali[,grep("^r.*[HA]",names(cali),value=T)],na.rm=T)
 xy <- data.frame(x,y)
 ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title=" Total Expresssion Read counts in 20 hybrid samples" , x = "total read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
 

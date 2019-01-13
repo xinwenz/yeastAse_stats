@@ -43,9 +43,9 @@ paraGetBB <- function(oneGeneRow ,x_key,y_key,csource) {
     minuslogl = neglhbetaBinomial_cisonly,
     #method = "L-BFGS-B",
     optimizer = "nlminb",
-    lower     = list(log_ec = -20,log_rHy = -20),
-    start     = list(log_ec =   0,log_rHy =   0),
-    upper     = list(log_ec =  20,log_rHy =  20),
+    lower     = list(log_ec = -20,log_rHy = 0),
+    start     = list(log_ec =   0,log_rHy = 10),
+    upper     = list(log_ec =  20,log_rHy =  30),
     data      = expCis)
   
   
