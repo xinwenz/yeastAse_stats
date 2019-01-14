@@ -30,6 +30,35 @@ names(cali_Ct) <- smpNm
 
 save(list = c('expi','cali','expi_Ct','cali_Ct','paraGetB','neglhBinomial_cisonly','paraGetBB','neglhbetaBinomial_cisonly','dbetabinom'),file = '/cloud/project/hpc_pre/hpc_need_Jan12.RData')
 
-####### local test of R program ################ 
+####### local test of R program ########################################################### 
 names(cali_Ct)[1:10]
 names(cali_Ct)[21:30]
+
+paraGetBB(cali[1903,],names(cali_Ct)[1:19],names(cali_Ct)[21:39],cali_Ct)
+paraGetB(cali[1903,],names(cali_Ct)[1:19],names(cali_Ct)[21:39],cali_Ct)
+
+paraGetBB(expi[4,],names(expi_Ct)[1:4],names(expi_Ct)[21:24],expi_Ct)
+paraGetB(expi[4,],names(expi_Ct)[1:4],names(expi_Ct)[21:24],expi_Ct)
+
+paraGetBB(repfine[4,],names(depth44)[1:4],names(depth44)[21:24],depth44)
+paraGetB(repfine[4,],names(depth44)[1:4],names(depth44)[21:24],depth44)
+
+paraGetBB(expi[expi$ypsGene=='APL5',],names(expi_Ct)[c(8,19,5,3,6,4,9,1,2,20)],names(expi_Ct)[c(10,11,17,14,12,13,15,18,16,7)],expi_Ct)
+paraGetB(expi[expi$ypsGene=='APL5',],names(expi_Ct)[c(8,19,5,3,6,4,9,1,2,20)],names(expi_Ct)[c(10,11,17,14,12,13,15,18,16,7)],expi_Ct)
+
+
+# check likelihood surface, around 0 , it's almost flat, so if starts here, optimizer would fail , and confidence interval fail, because of this too. 
+for(i in -20:30) {
+ans <- neglhbetaBinomial_cisonly(0.14433,i,
+    xHy = unlist(expi[expi$ypsGene=='ALG1',c(8,19,5,3,6,4,9,1,2,20)+1]),
+    nHy =unlist(expi[expi$ypsGene=='ALG1',c(8,19,5,3,6,4,9,1,2,20)+1] + expi[expi$ypsGene=='ALG1',c(10,11,17,14,12,13,15,18,16,7)+1]),
+    C1 = unlist(expi_Ct[c(8,19,5,3,6,4,9,1,2,20)+1]),
+    C2 = unlist(expi_Ct[c(8,19,5,3,6,4,9,1,2,20)+1]))
+  print(c(i,ans))
+}
+
+neglhBinomial_cisonly(0.14433,
+  xHy = unlist(expi[expi$ypsGene=='ALG1',c(8,19,5,3,6,4,9,1,2,20)+1]),
+nHy =unlist(expi[expi$ypsGene=='ALG1',c(8,19,5,3,6,4,9,1,2,20)+1] + expi[expi$ypsGene=='ALG1',c(10,11,17,14,12,13,15,18,16,7)+1]),
+                C1 = unlist(expi_Ct[c(8,19,5,3,6,4,9,1,2,20)+1]),
+                C2 = unlist(expi_Ct[c(8,19,5,3,6,4,9,1,2,20)+1]))

@@ -96,13 +96,13 @@ for(i in 1:10) {
   print(ans_tmp/4306)
 }
 
-for(i in 1:10) {
+for(i in 10:10) {
   myVarName <- paste0("expi_yps_null_",formatC(i,width=2,flag="0"))
   print(myVarName)
   tmp <- get(myVarName)
-  ans_tmp <- sum(tmp$B.ecisL > 0 | tmp$B.ecisH < 0,na.rm = T) 
-  print(ans_tmp)
-  print(ans_tmp/4306)
+  ans_tmp <- subset(tmp, tmp$B.ecisL > 0 | tmp$B.ecisH < 0) 
+  #print(ans_tmp)
+  #print(ans_tmp/4306)
 }
 
 
@@ -142,3 +142,16 @@ for(i in 1:10) {
   print(ans_tmp)
   print(ans_tmp/4306)
 }
+
+################################
+library(dplyr)
+siz = 200
+smp <- sample(x = 1:4306,size = siz,replace = F)
+tmp1 <- tmptb[smp,4:6] %>% arrange(`log.ecis`)
+tmp2 <- tmptb[smp,1:3] %>% arrange(log.ecis)
+names(tmp2) <- names(tmp1)
+null_two <- rbind(cbind(tmp1,type="bb",od=1:siz),cbind(tmp2,type='b',od=1:siz)) 
+ggplot(null_two,aes(x=od)) + 
+  geom_ribbon(aes(ymin=ecisL,ymax=ecisH,fill=type),alpha=0.3)+
+  scale_fill_manual(values=c( "steelblue","yellow")) +
+  geom_abline(slope = 0,intercept = 0)

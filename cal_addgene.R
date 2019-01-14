@@ -13,7 +13,8 @@ midmean <- function(x) {
   x[is.na(x)] <- 0 
   #x <- x[x >=  2 ]
   if(length(x) == 0) {return(0)}
-  round(fitdistr(x,"poisson")$estimate)
+  #round(fitdistr(x,"poisson")$estimate)
+  fitdistr(x,"poisson")$estimate
   #max(x)
   #res <- sum(x,rm.na=T)
   #if(is.na(res)) {res <- 1}

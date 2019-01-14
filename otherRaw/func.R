@@ -15,8 +15,8 @@ dbetabinom <- function(k, n, a , b , log = TRUE) {
 neglhbetaBinomial_cisonly <<- function(log_ec,log_rHy,xHy,nHy,C1,C2) {
   ec  <- 2^log_ec
   rHy <- 2^log_rHy
-  a <- C1 * ec / (rHy * (ec + 1 ))
-  b <- C2 * 1 / (rHy * (ec + 1))
+  a <- C1/rHy * ec /(ec + 1 )
+  b <- C2/rHy /(ec + 1)
   result <- -sum(dbetabinom(k=xHy, n=nHy, a=a, b=b,log = TRUE))
   return(result)
 }
@@ -41,10 +41,11 @@ paraGetBB <- function(oneGeneRow ,x_key,y_key,csource) {
   # split line """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   fit.beta.cis.nb <- mle2(
     minuslogl = neglhbetaBinomial_cisonly,
+    #method="CG",
     #method = "L-BFGS-B",
     optimizer = "nlminb",
-    lower     = list(log_ec = -20,log_rHy = 0),
-    start     = list(log_ec =   0,log_rHy = 10),
+    lower     = list(log_ec = -20,log_rHy = -20),
+    start     = list(log_ec =   0,log_rHy = 20),
     upper     = list(log_ec =  20,log_rHy =  30),
     data      = expCis)
   
@@ -69,8 +70,8 @@ paraGetBB <- function(oneGeneRow ,x_key,y_key,csource) {
       method = "L-BFGS-B",
       #optimizer = "nlminb",
       lower     = list(log_ec = -20,log_rHy = -20),
-      start     = list(log_ec =   0,log_rHy =   0),
-      upper     = list(log_ec =  20,log_rHy =  20),
+      start     = list(log_ec =   0,log_rHy =   20),
+      upper     = list(log_ec =  20,log_rHy =  30),
       data      = expCis)
     
     tmp1 <- tryCatch({
@@ -95,8 +96,8 @@ paraGetBB <- function(oneGeneRow ,x_key,y_key,csource) {
       method = "CG",
       #optimizer = "nlminb",
       #lower     = list(log.ec = -20,log.rHy = -20),
-      start     = list(log_ec = 0,log_rHy = 0),
-      #upper     = list(log.ec =  20,log.rHy =  20),
+      start     = list(log_ec = 0,log_rHy = 20),
+      #upper     = list(log.ec =  20,log.rHy =  30),
       data      = expCis)
     
     tmp1 <- tryCatch({
