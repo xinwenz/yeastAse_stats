@@ -9,6 +9,7 @@ xy <- data.frame(x,y)
 ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title=" Total DNA Read counts in 20 hybrid samples" , x = "total read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
 
 library(MASS)
+library(dplyr)
 midmean <- function(x) {
   x[is.na(x)] <- 0 
   #x <- x[x >=  2 ]
@@ -34,5 +35,3 @@ x <- colSums(cali[,grep("^y.*[HA]",names(cali),value=T)],na.rm=T)
 y <- colSums(cali[,grep("^r.*[HA]",names(cali),value=T)],na.rm=T)
 xy <- data.frame(x,y)
 ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title=" Total Expresssion Read counts in 20 hybrid samples" , x = "total read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
-
-cali_d <- x/y

@@ -54,4 +54,8 @@ cal <- mer2[,c(3,4,1,2,5:249)]
 j <- sapply(cal,is.factor)
 cal[j] <- lapply(cal[j],as.character)
 
+x <- colSums(cal[,grep("^y.*[HAC]_rc",names(cal),value=T)],na.rm=T)
+y <- colSums(cal[,grep("^r.*[HAC]_rc",names(cal),value=T)],na.rm=T)
+xy <- data.frame(x,y)
+ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title="inlcude co-culture" , x = "total read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
 
