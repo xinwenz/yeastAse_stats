@@ -1,7 +1,7 @@
 #!/bin/bash
-#$ -N expi_true
-#$ -t 1-20
-margs=$(head -n $SGE_TASK_ID expi_true_hpc_com.txt | tail -n 1) 
+#$ -N expi_rm
+#$ -t 1-10
+margs=$(head -n $SGE_TASK_ID expi_rm_hpc_com.txt | tail -n 1) 
 module load R 
 Rscript -<<EOF $margs
 
@@ -19,7 +19,7 @@ spPart2 <- sp_i[(length(sp_i)/2+1) : length(sp_i)]
 ######################################### define which data frame and coverage vector to use 
 orig <- expi
 orig_Ct <- expi_Ct
-f <- "expi_true"
+f <- "expi_rm"
 ######################################################
 x_key <- names(orig_Ct)[spPart1]
 y_key <- names(orig_Ct)[spPart2]

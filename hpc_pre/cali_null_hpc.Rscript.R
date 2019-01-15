@@ -1,7 +1,7 @@
 #!/bin/bash
-#$ -N expi_true
+#$ -N cali_null
 #$ -t 1-20
-margs=$(head -n $SGE_TASK_ID expi_true_hpc_com.txt | tail -n 1) 
+margs=$(head -n $SGE_TASK_ID cali_null_hpc_com.txt | tail -n 1) 
 module load R 
 Rscript -<<EOF $margs
 
@@ -17,9 +17,9 @@ spPart1 <- sp_i[1:(length(sp_i)/2)]
 spPart2 <- sp_i[(length(sp_i)/2+1) : length(sp_i)]
 
 ######################################### define which data frame and coverage vector to use 
-orig <- expi
-orig_Ct <- expi_Ct
-f <- "expi_true"
+orig <- cali
+orig_Ct <- cali_Ct
+f <- "cali_null"
 ######################################################
 x_key <- names(orig_Ct)[spPart1]
 y_key <- names(orig_Ct)[spPart2]
