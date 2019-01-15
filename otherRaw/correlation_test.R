@@ -42,5 +42,14 @@ find_best_match <- function(m) {
   return(ans)
 }
 
+# three null data set 's match seq 
+rep44_match <- find_best_match(cor_rep44) # 0.998
+expi_yps_match <- find_best_match(cor(expi[,2:21])) # 0.9913 
+expi_rm_match <- find_best_match(cor(expi[,22:41])) # 0.9914
 
-rep44_match <- find_best_match(cor_rep44)
+cali_cor <- c()
+for(i in 1:20) {
+  tmp <- c(i,cor(cali[,i+1],cali[,i+21]))
+  cali_cor <- rbind(ans,tmp)
+}
+cali_cor_match <- cali_cor[order(cali_cor[,2],decreasing = T),] # 0.503
