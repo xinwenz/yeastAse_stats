@@ -1,6 +1,8 @@
+load('/cloud/project/otherRaw/rep44.RData')
+
 source("/cloud/project/otherRaw/func.R")
 
-cali_d <- colSums(cali[,grep("^y.*[HA]",names(cali),value=T)],na.rm=T)/colSums(cali[,grep("^r.*[HA]",names(cali),value=T)],na.rm=T)
+cali_d <- colSums(cal[-wrong_rows,grep("^y.*[HA]_rc",names(cal),value=T)],na.rm=T)/ colSums(cal[-wrong_rows,grep("^r.*[HA]_rc",names(cal),value=T)],na.rm=T)
 
 x115 <- read.table('/cloud/project/otherRaw/E115_summary.txt',header=T,stringsAsFactors = F)
 x530 <- read.table('/cloud/project/otherRaw/E530_summary.txt',header = T,stringsAsFactors = F)
@@ -22,13 +24,14 @@ expi_Ct <- c(exR$CTS * cali_d /(1+cali_d),exR$CTS /(1+cali_d))
 names(expi_Ct) <- smpNm ######### smp_C valuable
 
 c120 <- read.table('/cloud/project/otherRaw/cali_demx.txt',header=T,stringsAsFactors = F)
-z <- z[grep(pattern = "C$",invert = T,z$RG),]
+z <- c120[grep(pattern = "C$",invert = T,c120$RG),c("RG","assigned")]
+z <- z[z$RG != "unknown",]
 library(dplyr)
 z <- arrange(z,RG)
 cali_Ct <- round(c(z$assigned * cali_d /(1+cali_d),z$assigned / (1 + cali_d)))
 names(cali_Ct) <- smpNm
 
-save(list = c('expi','cali','expi_Ct','cali_Ct','paraGetB','neglhBinomial_cisonly','paraGetBB','neglhbetaBinomial_cisonly','dbetabinom'),file = '/cloud/project/hpc_pre/hpc_need_Jan12.RData')
+save(list = c('rep44','depth44','expi','cali','expi_Ct','cali_Ct','paraGetB','neglhBinomial_cisonly','paraGetBB','neglhbetaBinomial_cisonly','dbetabinom'),file = '/cloud/project/hpc_pre/hpc_need_Jan14.RData')
 
 ####### local test of R program ########################################################### 
 names(cali_Ct)[1:10]

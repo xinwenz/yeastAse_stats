@@ -6,7 +6,8 @@ exph <- cbind(ypsGene=expg[,3],expg[,grep("[HA]_rc$",names(expf),value=T)])
 x <- colSums(exph[,grep("^y.*[HA]_rc",names(exph),value=T)],na.rm=T)
 y <- colSums(exph[,grep("^r.*[HA]_rc",names(exph),value=T)],na.rm=T)
 xy <- data.frame(x,y)
-ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title=" Total Expresssion Read counts in 20 hybrid samples" , x = "total read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
+ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title=" Total Expresssion Read counts in 20 hybrid samples using YPS as reference and correct SNPS" , x = "total read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
+
 
 
 library(MASS)
