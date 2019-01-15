@@ -50,6 +50,16 @@ expi_rm_match <- find_best_match(cor(expi[,22:41])) # 0.9914
 cali_cor <- c()
 for(i in 1:20) {
   tmp <- c(i,cor(cali[,i+1],cali[,i+21]))
-  cali_cor <- rbind(ans,tmp)
+  cali_cor <- rbind(cali_cor,tmp)
 }
-cali_cor_match <- cali_cor[order(cali_cor[,2],decreasing = T),] # 0.503
+cali_cor_match <- cali_cor[order(cali_cor[,2],decreasing = T),] # 0.504
+
+
+expi_cor <- c()
+for(i in 1:20) {
+  tmp <- c(i,cor(expi[,i+1],expi[,i+21]))
+  expi_cor <- rbind(expi_cor,tmp)
+}
+expi_cor_match <- expi_cor[order(expi_cor[,2],decreasing = T),] # 0.972
+
+save(list=c("rep44_match","expi_yps_match","expi_rm_match","cali_cor_match","expi_cor_match"),file='/cloud/project/otherRaw/run_hpc_Cor_seq.RData')
