@@ -13,7 +13,7 @@ cal_melt_pear <- melt(cor(cali[,-1],method="pearson"))
 ggplot(cal_melt_pear,aes(x=Var1,y=Var2,fill=value)) + geom_tile() + labs(title=" pearson correlation of calibraration DNA counts" )
 
 
-rep44_melt <- melt(cor(rep44[,-1],method='pearson'))
+merep44_melt <- melt(cor(rep44[,-1],method='pearson'))
 ggplot(data = rep44_melt, aes(x=Var1, y=Var2, fill=value)) + geom_tile() +  labs(title=" pearson correlation of 44 replicate expression counts" )
 cor_rep44 <- cor(rep44[,-1],method='pearson')
 

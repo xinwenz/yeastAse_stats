@@ -46,9 +46,11 @@ paraGetB(expi[4,],names(expi_Ct)[1:4],names(expi_Ct)[21:24],expi_Ct)
 paraGetBB(repfine[4,],names(depth44)[1:4],names(depth44)[21:24],depth44)
 paraGetB(repfine[4,],names(depth44)[1:4],names(depth44)[21:24],depth44)
 
-paraGetBB(expi[expi$ypsGene=='APL5',],names(expi_Ct)[c(8,19,5,3,6,4,9,1,2,20)],names(expi_Ct)[c(10,11,17,14,12,13,15,18,16,7)],expi_Ct)
-paraGetB(expi[expi$ypsGene=='APL5',],names(expi_Ct)[c(8,19,5,3,6,4,9,1,2,20)],names(expi_Ct)[c(10,11,17,14,12,13,15,18,16,7)],expi_Ct)
+paraGetBB(expi[expi$ypsGene=='ADE5',],names(expi_Ct)[c(8,19,5,3,6,4,9,1,2,20)],names(expi_Ct)[c(10,11,17,14,12,13,15,18,16,7)],expi_Ct)
+paraGetB(expi[expi$ypsGene=='ADE5',],names(expi_Ct)[c(8,19,5,3,6,4,9,1,2,20)],names(expi_Ct)[c(10,11,17,14,12,13,15,18,16,7)],expi_Ct)
 
+paraGetBB(expi[expi$ypsGene=='ADE5',],names(expi_Ct)[1:10],names(expi_Ct)[21:30],expi_Ct)
+paraGetB(expi[expi$ypsGene=='ADE5',],names(expi_Ct)[1:10],names(expi_Ct)[21:30],expi_Ct)
 
 # check likelihood surface, around 0 , it's almost flat, so if starts here, optimizer would fail , and confidence interval fail, because of this too. 
 for(i in -20:30) {
@@ -65,3 +67,13 @@ neglhBinomial_cisonly(0.14433,
 nHy =unlist(expi[expi$ypsGene=='ALG1',c(8,19,5,3,6,4,9,1,2,20)+1] + expi[expi$ypsGene=='ALG1',c(10,11,17,14,12,13,15,18,16,7)+1]),
                 C1 = unlist(expi_Ct[c(8,19,5,3,6,4,9,1,2,20)+1]),
                 C2 = unlist(expi_Ct[c(8,19,5,3,6,4,9,1,2,20)+1]))
+
+
+for(i in -0:30) {
+  ans <- neglhbetaBinomial_cisonly(-0.0157,i,
+                                   xHy = unlist(expi[expi$ypsGene=='ADE5',(1:10)+1]),
+                                   nHy =unlist(expi[expi$ypsGene=='ADE5',(1:10)+1] + expi[expi$ypsGene=='ADE5',(21:30)+1]),
+                                   C1 = unlist(expi_Ct[(1:10)]),
+                                   C2 = unlist(expi_Ct[(21:30)]))
+  print(c(i,ans))
+}

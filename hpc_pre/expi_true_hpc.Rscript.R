@@ -2,7 +2,7 @@
 #$ -N expi_true
 #$ -t 1-20
 margs=$(head -n $SGE_TASK_ID expi_true_hpc_com.txt | tail -n 1) 
-module load R 
+module load R/3.5.1
 Rscript -<<EOF $margs
 
 load("hpc_need_Jan14.RData") # likelihood functions,paraGetB/BB,expi,cali,expi_Ct,cali_Ct  
@@ -29,7 +29,7 @@ ans1 <- foreach(d=iter(orig,by="row"),
                 .packages='bbmle') %do%
   paraGetBB(d,x_key,y_key,orig_Ct)
 colnames(ans1) <- c("log.ecis","ecisL","ecisH","log.rHy","rHyL","rhyH")
-rownames(ans1) <- orig$ypsGene
+rownames(ans1) <- orig[,1]
 ans1 <- data.frame(ans1)
 
 ans2 <- foreach(d=iter(orig,by="row"),
@@ -37,7 +37,7 @@ ans2 <- foreach(d=iter(orig,by="row"),
                 .packages='bbmle') %do%
   paraGetB(d,x_key,y_key,orig_Ct)
 colnames(ans2) <- c("B.log.ecis","B.ecisL","B.ecisH")
-rownames(ans2) <- orig$ypsGene
+rownames(ans2) <- orig[,1]
 ans2 <- data.frame(ans2)
 
 ans3 <- cbind(ans1,ans2)

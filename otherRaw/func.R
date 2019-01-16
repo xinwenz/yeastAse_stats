@@ -41,13 +41,14 @@ paraGetBB <- function(oneGeneRow ,x_key,y_key,csource) {
   # split line """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   fit.beta.cis.nb <- mle2(
     minuslogl = neglhbetaBinomial_cisonly,
-    #method="CG",
-    #method = "L-BFGS-B",
-    optimizer = "nlminb",
-    lower     = list(log_ec = -20,log_rHy = -20),
-    start     = list(log_ec =   0,log_rHy = 20),
+    #method="SANN",
+    method = "L-BFGS-B",
+    #optimizer = "nlminb",
+    lower     = list(log_ec = -20,log_rHy = 0),
+    start     = list(log_ec =   0,log_rHy =15),
     upper     = list(log_ec =  20,log_rHy =  30),
-    data      = expCis)
+    data      = expCis
+     )
   
   
   tmp1 <- tryCatch({
@@ -64,54 +65,54 @@ paraGetBB <- function(oneGeneRow ,x_key,y_key,csource) {
   
   if(typeof(tmp2)=="S4") {tmp2 <-rbind(log_ec=c(NA,NA),log_rHy=c(NA,NA))}
   # split line """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  if(is.na(tmp2["log_ec",1])) {
+  if( is.na(tmp2["log_ec",1]) )    {
     fit.beta.cis.LB <- mle2(
       minuslogl = neglhbetaBinomial_cisonly,
       method = "L-BFGS-B",
       #optimizer = "nlminb",
-      lower     = list(log_ec = -20,log_rHy = -20),
-      start     = list(log_ec =   0,log_rHy =   20),
+      lower     = list(log_ec = -20,log_rHy = 0),
+      start     = list(log_ec =   0,log_rHy = 20),
       upper     = list(log_ec =  20,log_rHy =  30),
       data      = expCis)
-    
+
     tmp1 <- tryCatch({
       coef(fit.beta.cis.LB)
     },error=function(e){
       rbind(log_ec=NA,log_rHy=NA)
     })
-    
+
     tmp2 <- tryCatch({
       confint(fit.beta.cis.LB,level=0.95)
     },error=function(e){
       rbind(log_ec=c(NA,NA),log_rHy=c(NA,NA))
     })
-    
+
     if(typeof(tmp2)=="S4") {tmp2 <-rbind(log_ec=c(NA,NA),log_rHy=c(NA,NA))}
   }
   
   # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  if(is.na(tmp2["log_ec",1])) {
+  if(is.na(tmp2["log_ec",1]) )     {
     fit.beta.cis.cg <- mle2(
       minuslogl = neglhbetaBinomial_cisonly,
-      method = "CG",
-      #optimizer = "nlminb",
-      #lower     = list(log.ec = -20,log.rHy = -20),
-      start     = list(log_ec = 0,log_rHy = 20),
-      #upper     = list(log.ec =  20,log.rHy =  30),
+      #method = "CG",
+      optimizer = "nlminb",
+      lower     = list(log.ec = -20,log.rHy = -20),
+      start     = list(log_ec = 0,log_rHy = 0),
+      upper     = list(log.ec =  20,log.rHy =  20),
       data      = expCis)
-    
+
     tmp1 <- tryCatch({
       coef(fit.beta.cis.cg)
     },error=function(e){
       rbind(log_ec=NA,log_rHy=NA)
     })
-    
+
     tmp2 <- tryCatch({
       confint(fit.beta.cis.cg,level = 0.95)
     },error=function(e){
       rbind(log_ec=c(NA,NA),log_rHy=c(NA,NA))
     })
-    
+
     if(typeof(tmp2)=="S4") {tmp2 <-rbind(log_ec=c(NA,NA),log_rHy=c(NA,NA))}
   }
   #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

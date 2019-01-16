@@ -155,3 +155,32 @@ ggplot(null_two,aes(x=od)) +
   geom_ribbon(aes(ymin=ecisL,ymax=ecisH,fill=type),alpha=0.3)+
   scale_fill_manual(values=c( "steelblue","yellow")) +
   geom_abline(slope = 0,intercept = 0)
+
+
+
+###################### check rep44 data ############# 
+setwd(dir = "/cloud/project/rep_null")
+# 50 data points to calculate the range of false postives
+
+for(i in 1:22) {
+  mydataName <- paste0("rep_null_",formatC(i,width=2,flag="0"),".RData")
+  load(mydataName)
+}
+
+###which file ### compare binomial and binom ####
+gfl <- rep_null_20
+gfln <- "rep_null_20"
+####
+siz = 200
+smp <- sample(x = 1:nrow(gfl),size = siz,replace = F)
+tmp <- gfl[smp,] %>% arrange(`log.ecis`)
+tmp1 <- tmp[,1:3]
+tmp2 <- tmp[,7:9]
+names(tmp2) <- names(tmp1)
+null_two <- rbind(cbind(tmp1,type="Betabinom",od=1:siz),cbind(tmp2,type='binom',od=1:siz)) 
+ggplot(null_two,aes(x=od)) + 
+  geom_ribbon(aes(ymin=ecisL,ymax=ecisH,fill=type),alpha=0.3)+
+  scale_fill_manual(values=c( "steelblue","yellow")) +
+  geom_abline(slope = 0,intercept = 0) +
+  labs(main= paste(gfln,'replicats ,betabinom vs binom'))
+  
