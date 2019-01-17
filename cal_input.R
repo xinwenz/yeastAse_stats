@@ -1,8 +1,6 @@
-setwd("/cloud/project")
-
 ######### 1 : read in from yps128_5 cali #############
 #setwd("/cloud/project/cali_yps128_5/")
-setwd("/cloud/project/cali_yps_5/")
+setwd("~/cloud/project/cali_yps_5/")
 fileNum <- sapply(strsplit(x=list.files(path="./"),split = "_"),"[",2)
 fileLab <- rep(c("A","H","C"),times=10)
 smpID <- paste0(fileNum,fileLab)
@@ -24,8 +22,8 @@ colnames(cal_yps)[c(1,2)] <- c("ypsChrom","ypsPosit")
 
 
 ######### 2 : read in from  rm11_B cali #############
-#setwd("/cloud/project/cali_rm11_B/")
-setwd("/cloud/project/cali_rm11_B/")
+#setwd("~/cloud/project/cali_rm11_B/")
+setwd("~/cloud/project/cali_rm11_B/")
 fileNum <- sapply(strsplit(x=list.files(path="."),split = "_"),"[",2)
 fileLab <- rep(c("A","H","C"),times=10)
 smpID <- paste0(fileNum,fileLab)
@@ -46,7 +44,7 @@ colnames(cal_rm)[c(1,2)] <- c("rmChrom","rmPosit")
 
 
 ######### 3 : merge to get cal (data frame) ##########
-setwd('/cloud/project/otherRaw')
+setwd('~/cloud/project/otherRaw')
 load("posmap52.RData")
 mer1 <- merge.data.frame(posmap52,cal_yps,by = c(1,2),sort = F,all.x=T)
 mer2 <- merge.data.frame(mer1,cal_rm,by.x = c(3,4),by.y = c(1,2), sort = F, all.x=T)

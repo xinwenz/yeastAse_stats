@@ -1,4 +1,4 @@
-snpGeneName <- read.table(header=F,file="/cloud/project/otherRaw/yps128_5_snp_geneName.bed",stringsAsFactors = F)
+snpGeneName <- read.table(header=F,file="~/cloud/project/otherRaw/yps128_5_snp_geneName.bed",stringsAsFactors = F)
 colnames(snpGeneName) <- c("ypsChrom","ypsPosit","ypsTript")
 calg <- merge.data.frame(snpGeneName,cal[-wrong_rows,],by = c(1,2),sort = F,all=F) 
 calh <- cbind(ypsGene=calg[,3],calg[,grep("[HA]_rc$",names(cal),value=T)])

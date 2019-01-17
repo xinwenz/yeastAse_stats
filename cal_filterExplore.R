@@ -65,4 +65,4 @@ cali_d <- x/y
 
 # filter some posmap 
 posmap_52filter <- cal[-wrong_rows,1:9]
-save(posmap_52filter,file = "/cloud/project/otherRaw/posmap_52filter.RData")
+save(posmap_52filter,file = "~/cloud/project/otherRaw/posmap_52filter.RData")

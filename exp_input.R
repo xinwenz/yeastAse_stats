@@ -1,6 +1,6 @@
 
 ########################## get yps genome mapping expression #############
-setwd("/cloud/project//bowtie2_yps128_5/")
+setwd("~/cloud/project//bowtie2_yps128_5/")
 fileNum <- sapply(strsplit(x=list.files(path="."),split = "_"),"[",1)
 fileLab <- rep(c("A","H","C"),times=10)
 smpID <- paste0(fileNum,fileLab)
@@ -21,7 +21,7 @@ for (i in 2:30) {
 
 colnames(exp_yps)[c(1,2)] <- c("ypsChrom","ypsPosit")
 ###################### get rm genome mapping expression #############
-setwd("/cloud/project//bowtie2_rm11_B/")
+setwd("~/cloud/project//bowtie2_rm11_B/")
 fileNum <- sapply(strsplit(x=list.files(path="."),split = "_"),"[",1)
 fileLab <- rep(c("A","H","C"),times=10)
 smpID <- paste0(fileNum,fileLab)
@@ -41,7 +41,7 @@ for (i in 2:30) {
 colnames(exp_rm)[c(1,2)] <- c("rmChrom","rmPosit")
 
 #### merge yps_rm data based on posion map ##########
-setwd('/cloud/project/otherRaw/')
+setwd('~/cloud/project/otherRaw/')
 load("posmap_52filter.RData")
 
 mer1 <- merge.data.frame(posmap_52filter,exp_yps,by = c(1,2),sort = F,all = F)
