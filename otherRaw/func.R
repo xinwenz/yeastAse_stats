@@ -1,6 +1,5 @@
 library(bbmle)
 require("foreach")
-require("doParallel")
 require("iterators")
 
 dbetabinom <- function(k, n, a , b , log = TRUE) {

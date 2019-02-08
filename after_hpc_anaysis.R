@@ -68,71 +68,10 @@ for(i in 1:20) {
 
 sig_genes_0  <- subset(expi_true_20,expi_true_20$`ecisL`> 0 | expi_true_20$`ecisH`< 0 )  ### false positive rate ### 
 
-#### expi_yps_null analysis #############
-setwd(dir = "/cloud/project/expi_yps_null")
-for(i in 1:10) {
-  mydataName <- paste0("expi_yps_null_",formatC(i,width=2,flag="0"),".RData")
-  load(mydataName)
-}
 
 
 
-for(i in 1:10) {
-  myVarName <- paste0("expi_yps_null_",formatC(i,width=2,flag="0"))
-  print(myVarName)
-  tmp <- get(myVarName)
-  ans_tmp <- sum(tmp$ecisL > 0 | tmp$ecisH < 0,na.rm = T) 
-  print(ans_tmp)
-  print(ans_tmp/4306)
-}
-
-for(i in 10:10) {
-  myVarName <- paste0("expi_yps_null_",formatC(i,width=2,flag="0"))
-  print(myVarName)
-  tmp <- get(myVarName)
-  ans_tmp <- subset(tmp, tmp$B.ecisL > 0 | tmp$B.ecisH < 0) 
-  #print(ans_tmp)
-  #print(ans_tmp/4306)
-}
-
-
-######### expi_rm_null analysis ############# 
-setwd(dir = "/cloud/project/expi_rm_null")
-for(i in 1:10) {
-  mydataName <- paste0("expi_rm_null_",formatC(i,width=2,flag="0"),".RData")
-  load(mydataName)
-}
-
-library(dplyr)
-siz = 200
-smp <- sample(x = 1:4306,size = siz,replace = F)
-tmp1 <- expi_rm_null_10[smp,1:3] %>% arrange(`log.ecis`)
-tmp2 <- expi_rm_null_02[smp,1:3] %>% arrange(B.log.ecis)
-names(tmp2) <- names(tmp1)
-null_two <- rbind(cbind(tmp1,type="high_rep_bb",od=1:siz),cbind(tmp2,type='low_rep_bb',od=1:siz)) 
-ggplot(null_two,aes(x=od)) + 
-  geom_ribbon(aes(ymin=ecisL,ymax=ecisH,fill=type),alpha=0.3)+
-  scale_fill_manual(values=c( "steelblue","yellow")) +
-  geom_abline(slope = 0,intercept = 0)
-
-for(i in 1:10) {
-  myVarName <- paste0("expi_rm_null_",formatC(i,width=2,flag="0"))
-  print(myVarName)
-  tmp <- get(myVarName)
-  ans_tmp <- sum(tmp$ecisL > 0 | tmp$ecisH < 0,na.rm = T) 
-  print(ans_tmp)
-  print(ans_tmp/4306)
-}
-
-for(i in 1:10) {
-  myVarName <- paste0("expi_rm_null_",formatC(i,width=2,flag="0"))
-  print(myVarName)
-  tmp <- get(myVarName)
-  ans_tmp <- sum(tmp$B.ecisL > 0 | tmp$B.ecisH < 0,na.rm = T) 
-  print(ans_tmp)
-  print(ans_tmp/4306)
-}
-############ expi true significant rate #######################  
+############ expi true significant rate ####################### ################################# 
 setwd(dir = "~/cloud/project/expi_true/")
 # 50 data points to calculate the range of false postives
 for(i in 1:20) {
@@ -144,19 +83,27 @@ expi_sig_num <- function(){
   for(i in 1:20) {
     myVarName <- paste0("expi_true_",formatC(i,width=2,flag="0"))
     tmp <- get(myVarName)
-    B_uniq <- sum(tmp$B.ecisL > 0 | tmp$B.ecisH < 0,na.rm = T) /nrow(tmp)
-    Bb_uniq <- sum(tmp$ecisL > 0 | tmp$ecisH < 0,na.rm = T) /nrow(tmp)
     
+    B_all <- subset(tmp ,tmp$B.ecisL > 0 | tmp$B.ecisH < 0) 
+    Bb_all <-subset(tmp , tmp$ecisL > 0 | tmp$ecisH < 0) 
+    common <- intersect(rownames(B_all),rownames(Bb_all))
     
-    ans <- rbind(ans,c(ans_expi_true_B,ans_expi_true_Bb))
+    com_num <- length(common)
+    B_uniq_num <- nrow(B_all) - com_num
+    Bb_uniq_num <- nrow(Bb_all) -com_num 
+
+    ans <- rbind(ans,c(com_num/nrow(tmp),B_uniq_num/nrow(tmp),Bb_uniq_num/nrow(tmp)))
   }
   rownames(ans) <- 1:20
-  colnames(ans) <- c("expi_true_binom","expi_true_betaBi")
+  colnames(ans) <- c("common","Bino_uniq","BetaBi_uniq")
   return(data.frame(ans))
 }
+
 ggplot(expi_sig_num(), aes(1:20)) + 
-  geom_line(aes(y = expi_true_binom), linetype="longdash") + 
-  geom_line(aes(y = expi_true_betaBi),linetype = "solid")
+  geom_line(aes(y = common,color="common"), linetype="solid") + 
+  geom_line(aes(y = Bino_uniq,color= "Bino_uniq"),linetype = "longdash") + 
+  geom_line(aes(y= BetaBi_uniq ,color = "betaBi_uniq"), linetype = "longdash") + 
+  labs(title = "Rate of significant genes tested by Binom and BetaBi model")
 
 ########check false postive Rate in NULL datasets #######################
 get_fal_pos <- function() {

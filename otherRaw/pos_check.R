@@ -1,4 +1,4 @@
-setwd('/cloud/project/otherRaw')
+setwd('~/cloud/project/otherRaw')
 # filter out qulified snps 
 # generate snp list for yps and rm 
 # condense insertion and deletion into 1 pos. Make rm and yps fair #  
@@ -36,6 +36,7 @@ combn <- function(df,strn) {
   ans <- rbind(ans,mpool[ceiling(nrow(mpool)/2),])
   return(ans)
 }  
+
 
 library(dplyr)
 res4 <- res_good %>% arrange(ypsChrom,ypsPosit)

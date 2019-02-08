@@ -3,14 +3,16 @@ library(ggplot2)
 
 load('~/cloud/project/otherRaw/rep44.RData')
 
-melted_cormat <- melt(cor(expi[,-1],method='pearson'))
-ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+exph_RM14A <- exph[,(1:20)[-7]+1]
+melted_cormat <- melt(cor(exph_RM14A,method='pearson'))
+ ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+  scale_fill_gradient(low = "white", high = "red") +
   geom_tile() + labs(title=" pearson correlation of expression counts" )
 
 
 # cali data has low correlation between each replicates.. May be the coverage is so low, that all numbers centered around 25...  
-cal_melt_pear <- melt(cor(cali[,-1],method="pearson"))
-ggplot(cal_melt_pear,aes(x=Var1,y=Var2,fill=value)) + geom_tile() + labs(title=" pearson correlation of calibraration DNA counts" )
+cal_melt <- melt(cor(calh[,-1],method="pearson"))
+ggplot(cal_melt,aes(x=Var1,y=Var2,fill=value)) + geom_tile() + labs(title=" pearson correlation of calibraration DNA counts" )
 
 
 rep44_melt <- melt(cor(rep44[,-1],method='pearson'))
@@ -63,3 +65,4 @@ for(i in 1:20) {
 expi_cor_match <- expi_cor[order(expi_cor[,2],decreasing = T),] # 0.972
 
 save(list=c("rep44_match","expi_yps_match","expi_rm_match","cali_cor_match","expi_cor_match"),file='/cloud/project/otherRaw/run_hpc_Cor_seq.RData')
+
