@@ -20,10 +20,10 @@ for (i in 2:20) {
 colnames(expi)[1] <- "geneName"
 exph <- expi[,grep(".*comGc",names(expi),invert = T,value=T)]
 
-x <- colSums(exph[,grep(".*_yGc",names(calh),value=T)],na.rm=T)
-y <- colSums(exph[,grep(".*_rGc",names(calh),value=T)],na.rm=T)
+x <- colSums(exph[,grep(".*_yGc",names(exph),value=T)],na.rm=T)
+y <- colSums(exph[,grep(".*_rGc",names(exph),value=T)],na.rm=T)
 xy <- data.frame(x,y)
-ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title="inlcude co-culture" , x = "total Expression read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
+ggplot(xy,aes(x=x,y=y)) + geom_point() + labs(title="Expression read counts" , x = "total Expression read counts mapped to Yps128 allele" , y = "total read counts mapped to Rm11-1a allele" ) + scale_y_continuous(labels = scales::scientific) + scale_x_continuous(labels = scales::scientific) + geom_abline(slope = 1,intercept = 0) + theme(text=element_text(size=15))
 
 exph <- exph %>% arrange(rowSums(.[-1])) # sort by average read depth 
 exph <- exph[,c("geneName",grep(".*yGc",names(exph),value=T),grep(".*rGc",names(exph),value=T))]

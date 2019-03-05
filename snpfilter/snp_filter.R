@@ -1,4 +1,5 @@
 library(dplyr)
+get_double_sure_snp <-function() {
 setwd('~/cloud/project/otherRaw')
 # remove mummer unmatch snps   
 yr_pos <- read.table(header=T,file='yr5B.posmap')
@@ -11,9 +12,11 @@ res_good <- res[which(res$drct.x == res$drct.y),] # 86351
 
 write.table(res_good[,c(1,2)],file="~/cloud/project/snpfilter/yps128_5_snpls_351",row.names = F,quote=F,col.names = F)
 write.table(res_good[,c(3,4)],file="~/cloud/project/snpfilter/rm11_B_snpls_351",row.names = F,quote=F,col.names = F)
+}
 ### go to HPC , do a samtools count , in order to filter some SNPs without any evidence ### 
 ### hpc data saved to #####
-setwd("~/cloud/project/snpfilter/cali_yps_5/")
+remove_unsupported_snp <- function() {
+ setwd("~/cloud/project/snpfilter/cali_yps_5/")
 fileNum <- sapply(strsplit(x=list.files(path="./"),split = "_"),"[",2)
 fileLab <- rep(c("A","H","C"),times=10)
 smpID <- paste0(fileNum,fileLab)
@@ -23,7 +26,7 @@ cal_yps <- read.table(file[1],header=T)
 colnames(cal_yps)[-(1:2)] <- paste0("y",smpID[1],"_",c("rf","rc","af","ac")) # coverage,ref,refcount, alter fer, alter count
 
 
-for (i in 2:30) {
+for (i in 2:30) { 
   print(file[i])
   print(smpID[i])
   tmp <- read.table(file[i],header=T)
@@ -97,9 +100,12 @@ for(i in 1:nrow(cal)) {
 
 no_evd_rows <- which(evd_rcd_yA < 29 | evd_rcd_rA < 29 ) 
 
-######### 
 cal_evd <- cal[-no_evd_rows,]
-#### split blocks yps 
+}
+
+ 
+support_snp_list <- function() {
+ #### split blocks yps 
 mydisc <- function(chr1,pos1,chr2,pos2) {
   if(chr1 != chr2) {
     return(Inf)
@@ -136,8 +142,6 @@ for(i in 2:nrow(yps_block)) {
 yps_rm_69293_group <- cbind(yps_block,yps_block_tf,gN= tf2groupName(yps_block_tf))
 
 
-######### HPC to get samtools mpileup with Names######## 
-
 write.table(unique(yps_rm_69293_group[,c(1,2)]),file="~/cloud/project/snpfilter/yps128_5_snpls_u293",row.names = F,quote=F,col.names = F)
 
 write.table(unique(yps_rm_69293_group[,c(3,4)]),file="~/cloud/project/snpfilter/rm11_B_snpls_u293",row.names = F,quote=F,col.names = F)
@@ -146,8 +150,9 @@ write.table(unique(yps_rm_69293_group[,c(1,2,6)]),file="~/cloud/project/snpfilte
 
 write.table(unique(yps_rm_69293_group[,c(3,4,6)]),file="~/cloud/project/snpfilter/rm11_B_snpls_u293_group",row.names = F,quote=F,col.names = F)
 
-
+}
 ######### geneName add ########## 
+add_gene_name_snpls <- function() {
 genN <- read.table("~/cloud/project/snpfilter/yps128_5_snp_gene.txt",header = F)
 overlap_gene <- c()
 for(i in 2:nrow(genN)) {
@@ -172,3 +177,4 @@ write.table(unique(yps_rm_487_gene[,c(3,4)]),file="~/cloud/project/snpfilter/rm1
 write.table(unique(yps_rm_487_gene[,c(1,2,5)]),file="~/cloud/project/snpfilter/yps128_5_snpls_u487_gene",row.names = F,quote=F,col.names = F)
 
 write.table(unique(yps_rm_487_gene[,c(3,4,5)]),file="~/cloud/project/snpfilter/rm11_B_snpls_u487_gene",row.names = F,quote=F,col.names = F)
+}
