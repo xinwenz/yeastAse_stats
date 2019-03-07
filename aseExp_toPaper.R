@@ -1,57 +1,40 @@
-################# calculation of cis variation  #### 
+################# expression level v.s. log(ecis) figure  #### 
+
+tmpp <- exph_ypsRM14A9A_esum_2992
+
+count_dat <- exph
+
+avg_expression <- rowMeans(count_dat[,-1])
+conf_range_BB <- tmpp$ecisH - tmpp$ecisL
+conf_range_BI <- tmpp$B.ecisH - tmpp$B.ecisL
+sigi <- (tmpp$ecisH < 0 | tmpp$ecisL > 0) 
+tmpp_new <- cbind(tmpp,avg_expression,conf_range_BB,conf_range_BI, sigi)
+
+tmpp_new_sig <- tmpp_new %>% filter(sigi == TRUE)
+ggplot(tmpp_new_sig,aes(x=log.ecis,y=log2(avg_expression))) + geom_point(aes(color= conf_range_BB),size=3,alpha=0.4,shape=17) + scale_colour_gradient(low = "orange", high = "black")
+
+
+tmpp_new_no <- tmpp_new %>% filter(sigi == FALSE | is.na(sigi))
+ggplot(tmpp_new_no,aes(x=log.ecis,y=log2(avg_expression))) + geom_point(aes(color= conf_range_BB),size=3,alpha=0.4,shape=19) + scale_colour_gradient(low = "steelblue2", high = "black")
 
 
 
-############################# function Beta binomial model ####################   
-y_key <- grep('^y.*[AH]$',names(exp_fine4),value=T)
-r_key <- grep('^r.*[AH]$',names(exp_fine4),value=T)
-
-totCon <- colSums(exp_fine4[,y_key],na.rm =T) + colSums(exp_fine4[,r_key],na.rm=T)
-
-plot(colSums(exp_fine4[,y_key],na.rm=T),colSums(exp_fine4[,r_key],na.rm=T))
-abline(a=0,b=1)
-
-lev=0.95
-
- 
-
-######### use all 20 replicates #########    
-cl <- makeCluster(3)
-registerDoParallel(cl)# initiate cluster # not for windows users
-clusterExport(cl,c("dbetabinom","neglhbetaBinomial_cisonly"))
-
-ans_3M <- foreach(d=iter(exp_fine4,by="row"),
-               .combine=rbind,
-               .packages='bbmle') %dopar%
-  paraGetBB(d)
-stopCluster(cl)
+ggplot(tmpp_new,aes(x=log.ecis,y=log2(avg_expression))) + geom_point(aes(color= conf_range_BB, shape=sigi),size=3,alpha=0.4) + scale_colour_gradient(low = "cyan4", high = "black")
 
 
-ans_3M <- data.frame(ans_3M,stringsAsFactors = F)
-ans_geneID <- cbind(exp_fine4$ypsTript,ans_3M )  
-rownames(ans_geneID) <- NULL
-colnames(ans_geneID) <- c("geneName","log.ecis","ecis-","ecis+","log.rHy","rHy-","rhy+")
 
-# significant log1=0 
-sig_genes  <- subset(ans_geneID,ans_geneID$`ecis-`> 0 | ans_geneID$`ecis+`< 0 )   
+########## check the speed of finding significant genes ########## 
+#tm <- exph_trueRM14A9A_esum_2700
+#tm <- simu_p8_3750
 
-# sig log2x = 1.2 ; x = 
-sig_genes_0  <- subset(ans_geneID,ans_geneID$`ecis-`> 0 | ans_geneID$`ecis+`< 0 )  
-sig_genes_2  <- subset(ans_geneID,ans_geneID$`ecis-`> 0.2 | ans_geneID$`ecis+`< -0.2 )  
-sig_genes_5  <- subset(ans_geneID,ans_geneID$`ecis-`> 0.5 | ans_geneID$`ecis+`< -0.5 )  
-sig_genes_1  <- subset(ans_geneID,ans_geneID$`ecis-`> 1 | ans_geneID$`ecis+`< -1 )  
+tm <- exph_ypsRM14A9A_esum_2999
+sigi <- (tm$ecisH < 0 | tm$ecisL > 0) 
+tm_new <- cbind(tm,sigi)
+tm_rat <- ( cumsum(ifelse(is.na(tm_new$sigi),0,tm_new$sigi)) + x*0 ) 
+tm_final <- tail(tm_rat,1)
 
-c(nrow(sig_genes_0),nrow(sig_genes_2),nrow(sig_genes_5),nrow(sig_genes_1))/nrow(ans_3M)
-
-######################
-hist(ans_geneID$log.ecis,breaks=50,xlim=c(-5,5))
-hist(ans_geneID$log.ecis,breaks=100,xlim=c(-2,2))
-
-hist(ans_geneID$log.rHy)
-ans_geneID_notcover0 <- subset(ans_geneID,ans_geneID$`ecis-`> 0 | ans_geneID$`ecis+`< 0 )
-hist(ans_geneID_notcover0$log.ecis,breaks=100,xlim=c(-3,3))
-
-
+plot(1:nrow(tm), tm_rat/tm_final)
+abline(a = 0,b= 1/nrow(tm))
 
 
 
