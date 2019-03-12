@@ -3,7 +3,7 @@ load_rep <- function(x) {
     setwd(dir = mydir)
 }
 
-for(i in 1:3300) {
+for(i in 1:3300) {f
     mydataName <- paste0("rep_null_",formatC(i,width=4,flag="0"),".RData")
     load(mydataName)
 }
