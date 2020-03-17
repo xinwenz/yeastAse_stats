@@ -3,6 +3,33 @@ library(dplyr)
 library(gridExtra)
 library(reshape2)
 
+j <- 1
+each_nr <- 50
+# for(i in 1:20) {
+#     set.seed(i)
+#     stt <- 500*(i-1) + 1 
+#     edd <- 500*(i-1) + 500
+#     ndd <- sample(size= each_nr, x=stt:edd, replace = FALSE)
+#     for(k in 1:each_nr) {
+#         nddk <- ndd[k]
+#         mydataName <- paste0("~/cloud/project/R1_hpc_null_nostr_ci/rep_null_",formatC(nddk,width=5,flag="0"),".RData")
+#         load(mydataName)
+#         myVarName <- paste0("rep_null_",formatC(nddk,width=5,flag="0"))
+#         newname <- paste0("rep_null_", formatC(j,width=4,flag="0"))
+#         assign(newname, get(myVarName))
+#         rm(list = myVarName)
+#         j <- j + 1 
+#         }
+#     }
+
+#save(list=ls(pattern="rep_null_*"), file="~/cloud/project/R1_hpc_null_nostr_ci/rep_null_chs500.RData")
+load("~/cloud/project/R1_hpc_null_nostr_ci/rep_null_chs500.RData")
+
+#for(i in 1:17500) {
+#    mydataName <- paste0("~/cloud/project/R1_hpc_null_nostr_ci/rep_null_",formatC(i,width=5,flag="0"),".RData")
+#    load(mydataName)
+#}
+
 fpo_format <- function(nm,each_nr,nr,nGenes,nbit){
     varName <- nm
     each_nr <- each_nr
@@ -42,12 +69,7 @@ fpo_format <- function(nm,each_nr,nr,nGenes,nbit){
 
 
 #### Fig 1A 
-for(i in 1:17500) {
-    mydataName <- paste0("~/cloud/project/hpc_null_nostr/rep_null_",formatC(i,width=5,flag="0"),".RData")
-    load(mydataName)
-}
-
-df_rep44 <- fpo_format(nm="rep_null_",each_nr = 500 ,nr = 35 ,nGenes = 6023,nbit = 5)
+df_rep44 <- fpo_format(nm="rep_null_",each_nr = each_nr ,nr = 20 ,nGenes = 6023,nbit = 4)
 
 #pdf(file = "fig_rep45.pdf", width = 8, height = 11) # defaults to 7 x 7 inches
 
@@ -59,7 +81,7 @@ df_rep44 <- fpo_format(nm="rep_null_",each_nr = 500 ,nr = 35 ,nGenes = 6023,nbit
     geom_errorbar(stat="summary", fun.ymin=quantile,fun.ymax= quantile,fun.args = list(0.75), size=0.5,linetype="dotted",position =position_dodge(0.8)) +
     scale_fill_manual(values=c("steelblue2","tan")) +
     scale_color_manual(values=c( "steelblue2","tan")) +
-    labs(title="Gier2015: false posistive rate with different levels of replication", y="false positive rate", x="level of replication (Nr)") + 
+    labs(title="Gier2015: false positive rate with different levels of replication", y="false positive rate", x="level of replication (Nr)") + 
     theme_bw() +
     theme(axis.text.x=element_text(angle=40, hjust=1)) +
     coord_cartesian(ylim=c(0, 0.6)) +
@@ -77,5 +99,5 @@ df_rep44 <- fpo_format(nm="rep_null_",each_nr = 500 ,nr = 35 ,nGenes = 6023,nbit
         axis.title.x = element_text(colour="grey20",size=15,hjust=.5,vjust=0,face="bold"), 
         axis.title.y = element_text(colour="grey20",size=15,hjust=.5,vjust=.5,face="bold"))
 
- ggsave("fig_rep44.pdf", device = "pdf", width = 30, height = 15, units = "cm",dpi=300)
+# ggsave("fig_rep44.pdf", device = "pdf", width = 30, height = 15, units = "cm",dpi=300)
 

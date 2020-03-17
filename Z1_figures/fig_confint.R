@@ -1,7 +1,7 @@
-load("~/cloud/project/hpc_expTrueRM14A9A/exph_trueRM14A9A_esum_0450.RData")
-load("~/cloud/project/hpc_expTrueRM14A9A/exph_trueRM14A9A_esum_0900.RData")
-load("~/cloud/project/hpc_expTrueRM14A9A/exph_trueRM14A9A_esum_1800.RData")
-load("~/cloud/project/hpc_expTrueRM14A9A/exph_trueRM14A9A_esum_2700.RData")
+load("~/cloud/project/M6_expdc_ci_hybrid/expdc_hybrid_ci_075.RData")
+load("~/cloud/project/M6_expdc_ci_hybrid/expdc_hybrid_ci_150.RData")
+load("~/cloud/project/M6_expdc_ci_hybrid/expdc_hybrid_ci_300.RData")
+load("~/cloud/project/M6_expdc_ci_hybrid/expdc_hybrid_ci_450.RData")
 
 library(ggplot2)
 library(dplyr)
@@ -19,10 +19,10 @@ library(gridBase)
     
     
     ## repilicate Number : 3 -- (3 * 150) 
-    gfl3 <- exph_trueRM14A9A_esum_0450
-    gfl6 <- exph_trueRM14A9A_esum_0900
-    gfl12 <- exph_trueRM14A9A_esum_1800
-    gfl18 <- exph_trueRM14A9A_esum_2700
+    gfl3 <- expdc_hybrid_ci_075
+    gfl6 <- expdc_hybrid_ci_150
+    gfl12 <- expdc_hybrid_ci_300
+    gfl18 <- expdc_hybrid_ci_450
     
     g_all <- cbind(gfl3,gfl6,gfl12,gfl18)
     
@@ -107,10 +107,10 @@ library(gridBase)
         axis.title.y = element_text(colour="grey20",size=18,hjust=.5,vjust=.5,face="bold")) +
         #axis.title.y = element_blank()) + 
        facet_grid(rows = vars(expression),cols=vars(replicates_used), drop=F) +
-       theme(strip.text = element_text(size = 15, colour = "midnightblue",face="bold"))
+       theme(strip.text = element_text(size = 12, colour = "midnightblue",face="bold"))
       
-ggsave("fig_confint.pdf", device = "pdf", width = 40, height = 25, units = "cm",dpi=300)
+#ggsave("fig_confint.pdf", device = "pdf", width = 40, height = 25, units = "cm",dpi=300)
   
-rowMeans(exph[,-1])[smp_low]
-rowMeans(exph[,-1])[smp_mid]
-rowMeans(exph[,-1])[smp_high]
+#rowMeans(exph[,-1])[smp_low]
+#rowMeans(exph[,-1])[smp_mid]
+#rowMeans(exph[,-1])[smp_high]

@@ -90,7 +90,7 @@ ggplot(df_cal_rand_yps, aes(x=Used_replicates, y=fp_rate, shape=type)) +
     geom_errorbar(stat="summary", fun.ymin=quantile,fun.ymax= quantile,fun.args = list(0.75), size=0.25,linetype="dotted",position =position_dodge(0.2), color="brown") +
     scale_fill_manual(values=c("steelblue2","tan")) +
     scale_color_manual(values=c( "steelblue2","tan")) +
-    labs(title="R_9: DNA_rand_yps_sig0.05", y="rejection rate", x="level of replication (Nr)") + 
+    labs(title="Rejection rate rate with different levels of replication", y="rejection rate", x="level of replication (Nr)") + 
     theme_bw() +
     theme(axis.text.x=element_text(angle=0, hjust=1)) +
     coord_cartesian(xlim=c(1,20), ylim=c(0, 0.8)) +

@@ -3,20 +3,20 @@ library(dplyr)
 library(gridExtra)
 library(reshape2)
 
-for(i in 2700:2700) {
-    mydataName <- paste0("~/cloud/project/hpc_expTrueRM14A9A/exph_trueRM14A9A_esum_",formatC(i,width=4,flag="0"),".RData")
+#for(i in 2700:2700) {
+    mydataName <- paste0("~/cloud/project/M6_expdc_ci_hybrid/expdc_hybrid_ci_450.RData",formatC(i,width=4,flag="0"),".RData")
     load(mydataName)
 }
 
-tmpp <- exph_trueRM14A9A_esum_2700
+tmpp <- expdc_hybrid_ci_450
 
 godlist0 <- which(tmpp$ecisL > 0 | tmpp$ecisH <0)
-godlist0N <- (1:4710)[-godlist0]
+godlist0N <- (1:4631)[-godlist0]
 
 sigdf <- tmpp[godlist0,]
 sort_sigdf <- sort(abs(sigdf$log.ecis),decreasing = T)
 
-mydf <- data.frame(prop = 1:length(sort_sigdf) / 3308, absecis = sort_sigdf )
+mydf <- data.frame(prop = 1:length(sort_sigdf) / 4631, absecis = sort_sigdf )
 
 ggplot(mydf) +
   geom_point(aes(x = absecis, y= prop), size= 0.5) + 
@@ -34,6 +34,6 @@ ggplot(mydf) +
     axis.title.x = element_text(colour="grey20",size=13,hjust=.5,vjust=0,face="bold"), 
     axis.title.y = element_text(colour="grey20",size=13,hjust=.5,vjust=.5,face="bold"))
 
-ggsave("~/cloud/project/figures/fig_6B_hist.pdf", device = "pdf", width = 14, height = 12, units = "cm",dpi=200)
+#ggsave("~/cloud/project/figures/fig_6B_hist.pdf", device = "pdf", width = 14, height = 12, units = "cm",dpi=200)
      
      

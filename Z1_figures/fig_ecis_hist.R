@@ -1,6 +1,6 @@
-load("~/cloud/project/hpc_expTrueRM14A9A/exph_trueRM14A9A_esum_2700.RData")
+load("~/cloud/project/M6_expdc_ci_hybrid/expdc_hybrid_ci_450.RData")
 
-tmpp <- exph_trueRM14A9A_esum_2700
+tmpp <- expdc_hybrid_ci_450
 #hist(tmpp$log.ecis, breaks=100,xlim=c(-3,3)) ## histgram 
 ggplot(tmpp, aes(x=log.ecis)) + 
     geom_histogram(binwidth = 0.05, color="grey60",fill='grey80') + 

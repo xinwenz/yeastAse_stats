@@ -1,11 +1,11 @@
 #!/bin/bash
 #$ -ckpt restart
-#$ -t 1-91
-margs=$(head -n $SGE_TASK_ID exph_yps_hpc_com.txt | tail -n 1) 
+#$ -t 1-500
+margs=$(head -n $SGE_TASK_ID expdc_ypsRM14A9A_hpc_com.txt | tail -n 1) 
 module load R/3.5.1 
 Rscript -<<EOF $margs
 
-load("hpc_need_Jan31_fornull.RData") # likelihood functions,paraGetB/BB,expi,cali,expi_Ct,cali_Ct  
+load("hpc_need.RData") # likelihood functions,paraGetB/BB,expi,cali,expi_Ct,cali_Ct  
 require("foreach")
 require("iterators")
 library("bbmle")
@@ -17,9 +17,9 @@ spPart1 <- sp_i[1:(length(sp_i)/2)]
 spPart2 <- sp_i[(length(sp_i)/2+1) : length(sp_i)]
 
 ######################################### define which data frame and coverage vector to use 
-orig <- exph
-orig_Ct <- exph_Ct
-f <- "exph_yps"
+orig <- expdc
+orig_Ct <- expdc_Ct
+f <- "expdc_yps_ci"
 ######################################################
 x_key <- names(orig_Ct)[spPart1]
 y_key <- names(orig_Ct)[spPart2]

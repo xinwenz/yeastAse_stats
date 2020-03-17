@@ -40,12 +40,12 @@ fpo_format <- function(nm,each_nr,nr,nGenes,nbit){
     dfmm <- rbind(cbind(BB_df_m,type="Beta-Binom"),cbind(BI_df_m,type="Binom")) 
 }
 
-for(i in 1:3000) {
-    mydataName <- paste0("~/cloud/project/hpc_yps149_nostr/exph_ypsRM14A9A_esum_",formatC(i,width=4,flag="0"),".RData")
+for(i in 1:500) {
+    mydataName <- paste0("~/cloud/project/M5_expdc_ci_yps/expdc_yps_ci_",formatC(i,width=3,flag="0"),".RData")
     load(mydataName)
 }
 
-df_exphyps <- fpo_format(nm="exph_ypsRM14A9A_esum_",each_nr = 150 ,nr = 20 ,nGenes = 4710,nbit = 4)
+df_exphyps <- fpo_format(nm="expdc_yps_ci_",each_nr = 25 ,nr = 20 ,nGenes = 4631,nbit = 3)
 
 ggplot(df_exphyps, aes(x=Used_replicates, y=fp_rate, shape=type)) + 
     geom_abline(slope = 0, intercept = 0.05, color='brown') + 
@@ -55,7 +55,7 @@ ggplot(df_exphyps, aes(x=Used_replicates, y=fp_rate, shape=type)) +
     geom_errorbar(stat="summary", fun.ymin=quantile,fun.ymax= quantile,fun.args = list(0.75), lwd=0.5,linetype="dotted",position =position_dodge(0.8)) +
     scale_fill_manual(values=c("steelblue2","tan")) +
     scale_color_manual(values=c( "steelblue2","tan")) +
-  labs(title="Xinw2018_yps: false posistive rate with different levels of replication", y="false positive rate", x="level of replication (Nr)") +
+  labs(title="Xinw2018_yps: false positive rate with different levels of replication", y="false positive rate", x="level of replication (Nr)") +
     theme_bw() +
     theme(axis.text.x=element_text(angle=0, hjust=1)) +
     coord_cartesian(ylim=c(0, 0.6)) +

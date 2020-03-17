@@ -41,31 +41,60 @@ fpo_format <- function(nm,each_nr,nr,nGenes,nbit){
     dfmm <- rbind(cbind(BB_df_m,type="Beta-Binom"),cbind(BI_df_m,type="Binom")) 
 }
 
-for(i in 1:3750) {
-    mydataName <- paste0("~/cloud/project/hpc_simu_p1/simu_p1_",formatC(i,width=4,flag="0"),".RData")
-    load(mydataName)
-}
+each_nr <- 25
 
-for(i in 1:3750) {
-    mydataName <- paste0("~/cloud/project/hpc_simu_p4/simu_p4_",formatC(i,width=4,flag="0"),".RData")
-    load(mydataName)
-}
+# mx <- c("~/cloud/project/R2_hpc_simu_p1/simu_p1_","~/cloud/project/R3_hpc_simu_p4/simu_p4_","~/cloud/project/R3_hpc_simu_p8/simu_p8_","~/cloud/project/R4_hpc_simu_pc/simu_pc_")
+# my <- c("simu_p1_","simu_p4_","simu_p8_","simu_pc_")
+# 
+# for(t in 1:4) {
+#     x <- mx[t]
+#     y <- my[t]
+#     j <- 1
+#     for(i in 1:25) {
+#         set.seed(i)
+#         stt <- 150*(i-1) + 1
+#         edd <- 150*(i-1) + 150
+#         ndd <- sample(size= each_nr, x=stt:edd, replace = FALSE)
+#             for(k in 1:each_nr) {
+#                 nddk <- ndd[k]
+#                 mydataName <- paste0(x,formatC(nddk,width=4,flag="0"),".RData")
+#                 load(mydataName)
+#                 myVarName <- paste0(y,formatC(nddk,width=4,flag="0"))
+#                 newname <- paste0(y, formatC(j,width=3,flag="0"))
+#                 assign(newname, get(myVarName))
+#                 rm(list = myVarName)
+#                 j <- j + 1
+#             }
+#         }
+# }
 
-for(i in 1:3750) {
-    mydataName <- paste0("~/cloud/project/hpc_simu_p8/simu_p8_",formatC(i,width=4,flag="0"),".RData")
-    load(mydataName)
-}
+#save(list = ls(pattern = "simu_p*"), file = "~/cloud/project/R1_hpc_null_nostr_ci/simu_500p18.RData")
+load("~/cloud/project/R2_hpc_simu_p1/simu_500p18.RData")
+# #for(i in 1:3750) {
+#     mydataName <- paste0("~/cloud/project/hpc_simu_p1/simu_p1_",formatC(i,width=4,flag="0"),".RData")
+#     load(mydataName)
+# }
 
-for(i in 1:3750) {
-    mydataName <- paste0("~/cloud/project/hpc_simu_pc/simu_pc_",formatC(i,width=4,flag="0"),".RData")
-    load(mydataName)
-}
+# #for(i in 1:3750) {
+#     mydataName <- paste0("~/cloud/project/hpc_simu_p4/simu_p4_",formatC(i,width=4,flag="0"),".RData")
+#     load(mydataName)
+# }
+# 
+# #for(i in 1:3750) {
+#     mydataName <- paste0("~/cloud/project/hpc_simu_p8/simu_p8_",formatC(i,width=4,flag="0"),".RData")
+#     load(mydataName)
+# }
+# 
+# #for(i in 1:3750) {
+#     mydataName <- paste0("~/cloud/project/hpc_simu_pc/simu_pc_",formatC(i,width=4,flag="0"),".RData")
+#     load(mydataName)
+# }
 
 
-df_simu1 <- fpo_format(nm="simu_p1_",each_nr = 150 ,nr = 25 ,nGenes = 5000,nbit=4)
-df_simu4 <- fpo_format(nm="simu_p4_",each_nr = 150 ,nr = 25 ,nGenes = 5000,nbit=4)
-df_simu8 <- fpo_format(nm="simu_p8_",each_nr = 150 ,nr = 25 ,nGenes = 5000,nbit=4)
-df_simuc <- fpo_format(nm="simu_pc_",each_nr = 150 ,nr = 25 ,nGenes = 5000,nbit=4)
+df_simu1 <- fpo_format(nm="simu_p1_",each_nr = each_nr ,nr = 25 ,nGenes = 5000,nbit=3)
+df_simu4 <- fpo_format(nm="simu_p4_",each_nr = each_nr ,nr = 25 ,nGenes = 5000,nbit=3)
+df_simu8 <- fpo_format(nm="simu_p8_",each_nr = each_nr ,nr = 25 ,nGenes = 5000,nbit=3)
+df_simuc <- fpo_format(nm="simu_pc_",each_nr = each_nr ,nr = 25 ,nGenes = 5000,nbit=3)
 
 xfont <- 11 
 legfont <- 11
@@ -194,12 +223,12 @@ pc <- ggplot(df_simuc, aes(x=Used_replicates, y=fp_rate, shape=type)) +
         axis.title.y = element_blank())
 
 
-tx1=textGrob("simulated null datasets: false postive rate with different levels of replication", gp=gpar(fontface="bold", fontsize = 18))
+tx1=textGrob("simulated null datasets: false positive rate with different levels of replication", gp=gpar(fontface="bold", fontsize = 18))
 tx2=textGrob("false positive rate", gp=gpar(fontface="bold", fontsize=15), rot=90)
 tx3=textGrob("level of replication (Nr)", gp=gpar(fontface="bold", fontsize=15))
 
 pa <- grid.arrange(p1,p4,p8,pc,ncol=2,top=tx1,bottom=tx3, left=tx2)
-ggsave(file="fig_simu.pdf",pa, device = "pdf", width = 30, height = 20, units = "cm",dpi=200)
+#ggsave(file="fig_simu.pdf",pa, device = "pdf", width = 30, height = 20, units = "cm",dpi=200)
 #pdf(pa, file="test.pdf")
 
 
